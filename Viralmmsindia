@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Viral Indian Leak MMS</title>
+  <style>
+    body {
+      background-color: #000000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    .email-bar {
+      text-align: center;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    .heading {
+      font-size: 28px;
+      text-align: center;
+      color: #ffff00;
+      text-shadow: 0 0 10px #ffff00, 0 0 20px #ffff00;
+      margin-bottom: 30px;
+    }
+    .video-card {
+      background: #111;
+      border: 1px solid #333;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 0 10px #222;
+    }
+    iframe {
+      width: 100%;
+      height: 200px;
+      margin-bottom: 10px;
+    }
+    a.watch-link {
+      display: inline-block;
+      margin-top: 10px;
+      color: #0af;
+      text-decoration: underline;
+    }
+    @media screen and (max-width: 600px) {
+      .video-card iframe {
+        height: 160px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="email-bar">For complaints or video removal, contact: 
+    <a href="mailto:removal@viralindianmms.com" style="color: #0af;">removal@viralindianmms.com</a>
+  </div>
+
+  <div class="heading">Viral Indian Leak MMS</div>
+  
+  <div id="videoGallery"></div>
+
+  <script>
+    const sheetID = '1tMby5ZNJU9Ymx5XBJhHqL67DOVIpc_n2lnGqsk_JPCg';
+    const apiKey = 'AIzaSyAfuYJHxubZ_v5AGToEcKPd4P_PifgDMCo';
+    const sheetName = 'Sheet1';
+
+    async function loadVideos() {
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${sheetName}?key=${apiKey}`;
+      const res = await fetch(url);
+      const json = await res.json();
+      const rows = json.values;
+
+      const headers = rows[0];
+      const videos = rows.slice(1);
+
+      let galleryHTML = '';
+
+      videos.forEach((video, index) => {
+        const [id, title, embedLink, tags, desc, count] = video;
+
+        galleryHTML += `
+          <div class="video-card">
+            <h3>${title}</h3>
+            <iframe src="${embedLink}" frameborder="0" allowfullscreen></iframe>
+            <p><strong>Tags:</strong> ${tags}</p>
+            <p><strong>Description:</strong> ${desc}</p>
+            <p id="visitorCount${index}"><strong>Visitors:</strong> ${count}</p>
+            <a href="${embedLink}" target="_blank" class="watch-link" onclick="incrementVisitorCount(${index + 2})">Watch Video</a>
+          </div>
+        `;
+      });
+
+      document.getElementById('videoGallery').innerHTML = galleryHTML;
+    }
+
+    async function incrementVisitorCount(rowNumber) {
+      const cellRange = `${sheetName}!F${rowNumber}`;
+      const getUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${cellRange}?key=${apiKey}`;
+      
+      const res = await fetch(getUrl);
+      const json = await res.json();
+      let currentCount = parseInt(json.values[0][0]);
+      currentCount++;
+
+      await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${sheetID}/values/${cellRange}?valueInputOption=RAW&key=${apiKey}`, {
+        method: 'PUT',
+        body: JSON.stringify({ values: [[currentCount]] }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      const index = rowNumber - 2;
+      document.getElementById(`visitorCount${index}`).innerText = `Visitors: ${currentCount}`;
+    }
+
+    window.onload = loadVideos;
+  </script>
+
+</body>
+</html>
